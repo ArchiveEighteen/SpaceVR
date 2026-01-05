@@ -5,7 +5,6 @@
 
 #include "EnhancedInputComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
-#include "SNodePanel.h"
 #include "XRLoadingScreenFunctionLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -13,6 +12,11 @@
 AMainVRPawn::AMainVRPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
+}
+
+void AMainVRPawn::BeginPlay()
+{
+	Super::BeginPlay();
 	
 	if (!UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled()) return;
 	
@@ -23,12 +27,6 @@ AMainVRPawn::AMainVRPawn()
 	UKismetSystemLibrary::ExecuteConsoleCommand(this, TEXT("xr.SecondaryScreenPercentage.HMDRenderTarget 100"));
 	
 	UXRLoadingScreenFunctionLibrary::HideLoadingScreen();
-}
-
-void AMainVRPawn::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 void AMainVRPawn::Tick(float DeltaTime)
@@ -42,21 +40,4 @@ void AMainVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	
-	Input->BindAction(TurnInputAction, ETriggerEvent::Triggered, this, &AMainVRPawn::Turn);
-}
-
-void AMainVRPawn::Turn(const FInputActionInstance& Instance)
-{
-	const float ActionValue = Instance.GetValue().Get<float>();
-
-	if (const bool bRightTurn = ActionValue > 0.0f)
-	{
-		SnapTurn(bRightTurn);
-	}
-}
-
-void AMainVRPawn::SnapTurn(bool rightTurn)
-{
-	
 }

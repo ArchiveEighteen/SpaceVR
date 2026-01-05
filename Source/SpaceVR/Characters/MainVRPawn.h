@@ -16,8 +16,6 @@ public:
 	AMainVRPawn();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=Input)
-	UInputAction* TurnInputAction;
 	
 	virtual void BeginPlay() override;
 
@@ -27,9 +25,4 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 protected:
-	// ----- Input Delegates -----
-	void Turn(const FInputActionInstance& Instance);
-	
-	// ----- Helper Functions -----
-	void SnapTurn(bool rightTurn);
 };
